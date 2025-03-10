@@ -30,23 +30,23 @@ class HeartDataset(torch.utils.data.Dataset):
 class Net(nn.Module):
     def __init__(self, input_dim):
         super(Net, self).__init__()
-        self.fc1 = nn.Linear(input_dim, 128)
-        self.dropout1 = nn.Dropout(0.1)  # Dropout after first hidden layer
-        self.fc2 = nn.Linear(128, 64)
-        self.dropout2 = nn.Dropout(0.2)  # Dropout after second hidden layer
-        self.fc3 = nn.Linear(64, 32)
-        self.dropout3 = nn.Dropout(0.3)  # Dropout after third hidden layer
-        self.fc4 = nn.Linear(32, 1)
-        self.activation = nn.ReLU()       # Using ReLU activation
-        self.sigmoid = nn.Sigmoid()         # Sigmoid for binary classification
+        self.fc1 = nn.Linear(input_dim, 256)
+        self.bn1 = nn.BatchNorm1d(256)
+        self.dropout1 = nn.Dropout(0.2)
+        self.fc2 = nn.Linear(256, 128)
+        self.bn2 = nn.BatchNorm1d(128)
+        self.dropout2 = nn.Dropout(0.3)
+        self.fc3 = nn.Linear(128, 64)
+        self.bn3 = nn.BatchNorm1d(64)
+        self.dropout3 = nn.Dropout(0.2)
+        self.fc4 = nn.Linear(64, 1)
+        self.activation = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
-        x = self.activation(self.fc1(x))
-        x = self.dropout1(x)
-        x = self.activation(self.fc2(x))
-        x = self.dropout2(x)
-        x = self.activation(self.fc3(x))
-        x = self.dropout3(x)
+        x = self.dropout1(self.activation(self.bn1(self.fc1(x))))
+        x = self.dropout2(self.activation(self.bn2(self.fc2(x))))
+        x = self.dropout3(self.activation(self.bn3(self.fc3(x))))
         x = self.sigmoid(self.fc4(x))
         return x
 
@@ -81,14 +81,16 @@ def load_data(partition_id: int, num_partitions: int):
 # 4. Federated Training Function
 # -------------------------
 def train(net, trainloader, epochs, device):
-    """Train the model on the training set using BCELoss and Adagrad."""
+    """Train the model on the training set using BCELoss and Adam with learning rate scheduling."""
     net.to(device)
     criterion = nn.BCELoss().to(device)
-    # Use Adagrad as optimizer
-    optimizer = torch.optim.Adagrad(net.parameters(), lr=0.01)
+    optimizer = torch.optim.Adam(net.parameters(), lr=0.001, weight_decay=1e-5)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=2, verbose=True)
+    
     net.train()
     running_loss = 0.0
-    for _ in range(epochs):
+    for epoch in range(epochs):
+        epoch_loss = 0.0
         for features, labels in trainloader:
             features = torch.tensor(features).to(device)
             labels = torch.tensor(labels).to(device)
@@ -96,9 +98,15 @@ def train(net, trainloader, epochs, device):
             outputs = net(features)
             loss = criterion(outputs, labels)
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(net.parameters(), max_norm=1.0)
             optimizer.step()
-            running_loss += loss.item() * features.size(0)
-    avg_trainloss = running_loss / len(trainloader)
+            epoch_loss += loss.item() * features.size(0)
+        
+        avg_epoch_loss = epoch_loss / len(trainloader.dataset)
+        scheduler.step(avg_epoch_loss)
+        running_loss += epoch_loss
+    
+    avg_trainloss = running_loss / (len(trainloader.dataset) * epochs)
     return avg_trainloss
 
 # -------------------------
@@ -133,3 +141,66 @@ def set_weights(net, parameters):
     params_dict = zip(net.state_dict().keys(), parameters)
     state_dict = OrderedDict({k: torch.tensor(v) for k, v in params_dict})
     net.load_state_dict(state_dict, strict=True)
+
+# -------------------------
+# 7. Prediction Function
+# -------------------------
+def predict(net, features, device='cpu'):
+    """
+    Make predictions using the trained model.
+    
+    Args:
+        net: Trained PyTorch model
+        features: numpy array or pandas DataFrame of features
+        device: 'cpu' or 'cuda' device to use
+        
+    Returns:
+        predictions: numpy array of predicted probabilities
+        binary_predictions: numpy array of binary predictions (0 or 1)
+    """
+    net.to(device)
+    net.eval()
+    
+    # Convert features to correct format if needed
+    if isinstance(features, pd.DataFrame):
+        # Drop target column if it exists
+        if 'target' in features.columns:
+            features = features.drop('target', axis=1)
+        features = features.values.astype(np.float32)
+    
+    # Normalize features using the same method as in HeartDataset
+    features = (features - features.mean(axis=0)) / features.std(axis=0)
+    
+    # Convert to tensor
+    features_tensor = torch.tensor(features).to(device)
+    
+    with torch.no_grad():
+        # Get predictions
+        outputs = net(features_tensor)
+        predictions = outputs.cpu().numpy()
+        binary_predictions = (predictions >= 0.5).astype(int)
+    
+    return predictions, binary_predictions
+
+def load_and_predict(model_input_dim, features, weights=None, device='cpu'):
+    """
+    Load a model with weights and make predictions.
+    
+    Args:
+        model_input_dim: Input dimension for the model
+        features: Features to predict on
+        weights: Optional model weights to load
+        device: Device to use for computation
+        
+    Returns:
+        predictions: Predicted probabilities and binary predictions
+    """
+    # Initialize model
+    net = Net(input_dim=model_input_dim)
+    
+    # Load weights if provided
+    if weights is not None:
+        set_weights(net, weights)
+    
+    # Make predictions
+    return predict(net, features, device)
