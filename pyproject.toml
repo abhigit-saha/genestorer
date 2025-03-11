@@ -27,7 +27,7 @@ clientapp = "tryst.client_app:app"
 [tool.flwr.app.config]
 num-server-rounds = 10
 fraction-fit = 0.5
-local-epochs = 3
+local-epochs = 40
 
 [tool.flwr.federations]
 default = "local-simulation"

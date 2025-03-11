@@ -1,5 +1,3 @@
-"""Heart Federated Learning Client Application."""
-
 import torch
 from flwr.client import ClientApp, NumPyClient
 from flwr.common import Context
