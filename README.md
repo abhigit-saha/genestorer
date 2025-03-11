@@ -42,8 +42,9 @@ note: Please refer to other branches with the various parts of the code. Thank y
 - Node.js 18+
 - MongoDB & IPFS Node
 
-### **Installation Steps**
-1. **Clone the Repository**
-   ```sh
-   git clone https://github.com/your-repo.git
-   cd your-repo
+#To run the hyperledger fabric setup
+- clone the repo
+- go to ```test-network``` directory
+- make ```./restart.sh``` as executable by running ```chmod +x ./restart.sh```
+- run ```./restart.sh```
+  
