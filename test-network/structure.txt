@@ -1,0 +1,173 @@
+.
+├── org1.example.com
+│   ├── ca
+│   │   └── ca.org1.example.com-cert.pem
+│   ├── connection-org1.json
+│   ├── connection-org1.yaml
+│   ├── fabric-ca-client-config.yaml
+│   ├── msp
+│   │   ├── cacerts
+│   │   │   └── localhost-7054-ca-org1.pem
+│   │   ├── config.yaml
+│   │   ├── IssuerPublicKey
+│   │   ├── IssuerRevocationPublicKey
+│   │   ├── keystore
+│   │   │   └── 1d1eb7d26e04de5e248107957bb300e230af188ebc435dc132c87105113e0b56_sk
+│   │   ├── signcerts
+│   │   │   └── cert.pem
+│   │   ├── tlscacerts
+│   │   │   └── ca.crt
+│   │   └── user
+│   ├── peers
+│   │   └── peer0.org1.example.com
+│   │       ├── msp
+│   │       │   ├── cacerts
+│   │       │   │   └── localhost-7054-ca-org1.pem
+│   │       │   ├── config.yaml
+│   │       │   ├── IssuerPublicKey
+│   │       │   ├── IssuerRevocationPublicKey
+│   │       │   ├── keystore
+│   │       │   │   └── 0552fca9b1ac12b65782ae9bf191dea56bd7b71dcdf96d1ffe314c856a77f07b_sk
+│   │       │   ├── signcerts
+│   │       │   │   └── cert.pem
+│   │       │   └── user
+│   │       └── tls
+│   │           ├── cacerts
+│   │           ├── ca.crt
+│   │           ├── IssuerPublicKey
+│   │           ├── IssuerRevocationPublicKey
+│   │           ├── keystore
+│   │           │   └── d4fdb6afaecd61a6d8e76452476878d7306a84fc8691b1cc5efbb00336aa1e2c_sk
+│   │           ├── server.crt
+│   │           ├── server.key
+│   │           ├── signcerts
+│   │           │   └── cert.pem
+│   │           ├── tlscacerts
+│   │           │   └── tls-localhost-7054-ca-org1.pem
+│   │           └── user
+│   ├── tlsca
+│   │   └── tlsca.org1.example.com-cert.pem
+│   └── users
+│       ├── Admin@org1.example.com
+│       │   └── msp
+│       │       ├── cacerts
+│       │       │   └── localhost-7054-ca-org1.pem
+│       │       ├── config.yaml
+│       │       ├── IssuerPublicKey
+│       │       ├── IssuerRevocationPublicKey
+│       │       ├── keystore
+│       │       │   └── 9100bf59d519a2db455ef861082f02b459c7c6487719197da94f52ac3a183edb_sk
+│       │       ├── signcerts
+│       │       │   └── cert.pem
+│       │       └── user
+│       ├── owner@org1.example.com
+│       │   └── msp
+│       │       ├── cacerts
+│       │       │   └── localhost-7054-ca-org1.pem
+│       │       ├── config.yaml
+│       │       ├── IssuerPublicKey
+│       │       ├── IssuerRevocationPublicKey
+│       │       ├── keystore
+│       │       │   └── 09b6a2d13680de4deefd185d68924c3a9130046fe775c4dde07cd6ccdbdc0f57_sk
+│       │       ├── signcerts
+│       │       │   └── cert.pem
+│       │       └── user
+│       └── User1@org1.example.com
+│           └── msp
+│               ├── cacerts
+│               │   └── localhost-7054-ca-org1.pem
+│               ├── config.yaml
+│               ├── IssuerPublicKey
+│               ├── IssuerRevocationPublicKey
+│               ├── keystore
+│               │   └── 593833f99c5a2f07e06e9893b31d9c78628b36fb3ccd5e8fb5b2033f36fc259e_sk
+│               ├── signcerts
+│               │   └── cert.pem
+│               └── user
+└── org2.example.com
+    ├── ca
+    │   └── ca.org2.example.com-cert.pem
+    ├── connection-org2.json
+    ├── connection-org2.yaml
+    ├── fabric-ca-client-config.yaml
+    ├── msp
+    │   ├── cacerts
+    │   │   └── localhost-8054-ca-org2.pem
+    │   ├── config.yaml
+    │   ├── IssuerPublicKey
+    │   ├── IssuerRevocationPublicKey
+    │   ├── keystore
+    │   │   └── e5218c278eb3380c6e7a0ce73560aa93815ed7a1e7e5aa472ec8ce8b1d1b3dd6_sk
+    │   ├── signcerts
+    │   │   └── cert.pem
+    │   ├── tlscacerts
+    │   │   └── ca.crt
+    │   └── user
+    ├── peers
+    │   └── peer0.org2.example.com
+    │       ├── msp
+    │       │   ├── cacerts
+    │       │   │   └── localhost-8054-ca-org2.pem
+    │       │   ├── config.yaml
+    │       │   ├── IssuerPublicKey
+    │       │   ├── IssuerRevocationPublicKey
+    │       │   ├── keystore
+    │       │   │   └── 01ca0a8ea272eeb2653efeb7690217c190374ccbdaf0e8a84659cb44223337f8_sk
+    │       │   ├── signcerts
+    │       │   │   └── cert.pem
+    │       │   └── user
+    │       └── tls
+    │           ├── cacerts
+    │           ├── ca.crt
+    │           ├── IssuerPublicKey
+    │           ├── IssuerRevocationPublicKey
+    │           ├── keystore
+    │           │   └── ea2a53c798caad163476c04302dfbbf48ae8e09d02a158b807c199b542ae2b25_sk
+    │           ├── server.crt
+    │           ├── server.key
+    │           ├── signcerts
+    │           │   └── cert.pem
+    │           ├── tlscacerts
+    │           │   └── tls-localhost-8054-ca-org2.pem
+    │           └── user
+    ├── tlsca
+    │   └── tlsca.org2.example.com-cert.pem
+    └── users
+        ├── Admin@org2.example.com
+        │   └── msp
+        │       ├── cacerts
+        │       │   └── localhost-8054-ca-org2.pem
+        │       ├── config.yaml
+        │       ├── IssuerPublicKey
+        │       ├── IssuerRevocationPublicKey
+        │       ├── keystore
+        │       │   └── 34f40f8621838383658d1470d32707ecc6354e5f4c1b9841496f5dc7bc4147ee_sk
+        │       ├── signcerts
+        │       │   └── cert.pem
+        │       └── user
+        ├── buyer@org2.example.com
+        │   └── msp
+        │       ├── cacerts
+        │       │   └── localhost-8054-ca-org2.pem
+        │       ├── config.yaml
+        │       ├── IssuerPublicKey
+        │       ├── IssuerRevocationPublicKey
+        │       ├── keystore
+        │       │   └── 442aa0cc8f590b1c95d5b25b83a7f04c3bf24ff14d6aca33da861c99724cfcb5_sk
+        │       ├── signcerts
+        │       │   └── cert.pem
+        │       └── user
+        └── User1@org2.example.com
+            └── msp
+                ├── cacerts
+                │   └── localhost-8054-ca-org2.pem
+                ├── config.yaml
+                ├── IssuerPublicKey
+                ├── IssuerRevocationPublicKey
+                ├── keystore
+                │   └── dd37dc8ae6756e79d5fd0fdea0efd5eee4ae2fd0aec4cbf265cc7c8efbf94fe1_sk
+                ├── signcerts
+                │   └── cert.pem
+                └── user
+
+82 directories, 88 files
