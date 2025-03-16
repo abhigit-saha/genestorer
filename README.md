@@ -1,7 +1,7 @@
 # **Secure Health Data Exchange System**
 *Federated Learning + Blockchain (Hyperledger)*
 
-note: Please refer to other branches with the various parts of the code. Thank you
+note: Please refer to other branches with the various parts of the code. Also note the hyperledge branch uses a starter template (hence the number of commits).
 
 ## **📌 Overview**
 > Data is the new oil, so there arises a need to store the data securely and train ml models without giving away the data.
